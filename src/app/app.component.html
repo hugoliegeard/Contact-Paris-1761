@@ -1,13 +1,85 @@
-
 <div class="container">
   <header class="mb-4">
     <nav class="navbar bg-light">
       <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">
+          <!--
+              Avec l'expression {{ }} j'affiche
+              le contenu de mes variables.
+           -->
           {{ title }}
         </span>
       </div>
     </nav>
-  </header>
-</div>
+  </header> <!-- /.header -->
+
+  <!--
+  EXEMPLE AVEC UN OBJET JS
+  <div class="row">
+    <div class="col">
+      <h1>
+        {{ unContact.name }}
+        <small>{{ unContact.email }}</small>
+      </h1>
+    </div>
+  </div>-->
+
+  <div class="row">
+    <div class="col-sm-4">
+
+      <!-- Liste des contacts de l'application -->
+      <div class="list-group">
+        <a *ngFor="let contact of mesContacts"
+           (click)="displayContact(contact)"
+           [class.active]="contactActif === conta ct"
+           href="#" class="list-group-item list-group-item-action" aria-current="true">
+          {{ contact.name }}
+        </a>
+      </div> <!-- /.list-group -->
+
+      <form>
+
+        <h5 class="text-center m-4">Ajouter un contact</h5>
+
+        <div class="mb-3">
+          <input class="form-control" type="text"
+                 placeholder="Saisissez votre nom complet">
+        </div>
+
+        <div class="mb-3">
+          <input class="form-control" type="text"
+                 placeholder="Saisissez votre pseudo">
+        </div>
+
+        <div class="mb-3">
+          <input class="form-control" type="text"
+                 placeholder="Saisissez votre e-mail">
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-dark">Ajouter le contact</button>
+        </div>
+
+      </form>
+
+    </div> <!-- /.col-sm-4 -->
+
+    <div class="col-sm-8">
+      <div class="p-5 mb-4 bg-light rounded-3" *ngIf="contactActif">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">{{ contactActif.name }}</h1>
+          <p class="col-md-8 fs-4">{{ contactActif.username }}</p>
+        </div>
+      </div> <!-- /.jumbotron -->
+      <div class="p-5 mb-4 bg-light rounded-3" *ngIf="!contactActif">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">Gestion de contact</h1>
+          <p class="col-md-8 fs-4">Choisissez un contact</p>
+        </div>
+      </div> <!-- /.jumbotron -->
+    </div> <!-- /.col-sm-8 -->
+
+  </div> <!-- /.row -->
+</div> <!-- /.container -->
+
 
