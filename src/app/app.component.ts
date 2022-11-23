@@ -1,15 +1,6 @@
 import { Component } from '@angular/core';
-
-class Contact {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address?: object;
-  phone?: number;
-  website?: string;
-  company?: object;
-}
+import {Contact} from "./models/contact";
+import {ContactStorageService} from "./services/contact-storage.service";
 
 /**
  * @Component est ce qu'on appel un décorateur.
@@ -43,6 +34,22 @@ class Contact {
  */
 export class AppComponent {
 
+  /**
+   * Grâce au constructeur, on va charger
+   * dans notre composant, le contactStorageService.
+   * @param contactStorageService
+   */
+  constructor(private contactStorageService: ContactStorageService) {
+
+    /**
+     * Au chargement de mon composant, je vais récupérer
+     * la liste de mes contacts depuis le localstorage
+     * et l'affecter à mon tableau "mesContacts".
+     */
+    this.mesContacts = contactStorageService.getContacts();
+
+  }
+
   // -- Déclarer une variable
   title = 'Gestion de Contacts';
 
@@ -58,7 +65,7 @@ export class AppComponent {
   // -- Tableau de contacts.
   // Permet de sauvegarder les contacts de notre application.
   mesContacts: Contact[] = [
-    {
+    /*{
       // CLE : VALEUR
       id: 1,
       name: 'Hugo LIEGEARD',
@@ -85,7 +92,7 @@ export class AppComponent {
       name: 'Sara RAHALI',
       username: 'sararahali',
       email: 'sara@wf3.fr'
-    }
+    }*/
   ];
 
   /**
@@ -99,5 +106,47 @@ export class AppComponent {
    */
   displayContact(contact: Contact) {
     this.contactActif = contact;
+  }
+
+  /**
+   * Permet de sauvegarder
+   * un nouveau contact.
+   * @param contact
+   */
+  pushContact(contact: Contact) {
+    // -- Vérification dans la console
+    console.log(contact);
+
+    // -- Attribution d'un ID
+    contact.id = Date.now()
+
+    // -- Ajouter le contact dans mon tableau
+    this.mesContacts.push( contact );
+
+    // -- Déclencher la sauvegarder dans le storage
+    this.saveContacts();
+  }
+
+  /**
+   * Permet de sauvegarder UNIQUEMENT les contacts
+   * dans le localstorage, via notre service.
+   */
+  saveContacts() {
+    // -- Déclencher la sauvegarder dans le storage
+    this.contactStorageService.saveContacts( this.mesContacts );
+  }
+
+  /**
+   * Permet de supprimer un contact
+   * @param contact
+   */
+  deleteContact(contact: Contact) {
+
+    // -- Supprimer le contact du tableau
+    this.mesContacts.splice( this.mesContacts.indexOf(contact), 1 );
+
+    // -- Sauvegarder les contacts
+    this.saveContacts();
+
   }
 }
